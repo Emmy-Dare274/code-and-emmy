@@ -20,3 +20,160 @@ $enable-dark-mode: true;
 body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+// ================================================================
+// Hero section
+// ================================================================
+.hero-section {
+  padding: 4rem 0 3rem;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+
+  @media (min-width: 992px) {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+.hero-eyebrow {
+  letter-spacing: 0.08em;
+}
+
+.hero-tagline {
+  max-width: 34rem;
+  font-size: 1.15rem;
+}
+
+// The "Code & Emmy" heading. Several stacked text shadows create a
+// solid, extruded 3D block instead of a flat color. The colors flip
+// between modes so it stays readable and glowing on both.
+.brand-3d {
+  font-weight: 500;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin: 0.25rem 0 1rem;
+  color: $primary;
+  text-shadow:
+    1px 1px 0 #274ec7,
+    2px 2px 0 #2044ad,
+    3px 3px 0 #1a3993,
+    4px 4px 10px rgba(20, 21, 26, 0.35);
+}
+
+[data-bs-theme="dark"] .brand-3d {
+  color: #eef2ff;
+  text-shadow:
+    1px 1px 0 #3a5fe0,
+    2px 2px 0 #2f4fc4,
+    3px 3px 0 #253f9e,
+    4px 4px 14px rgba(47, 95, 237, 0.55);
+}
+
+// ================================================================
+// Hero photo
+// ================================================================
+.hero-photo {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-photo-img {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 12px 30px rgba(20, 21, 26, 0.2);
+}
+
+[data-bs-theme="dark"] .hero-photo-img {
+  border-color: #16181d;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.photo-placeholder {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: #fff;
+  background: linear-gradient(135deg, $primary, $secondary);
+}
+
+// ================================================================
+// Code showcase section
+// The macOS-style code window, built as real markup instead of an
+// image, so the text stays sharp at any size and reacts to the
+// theme toggle. The gradient and glow give it the "3D illuminated"
+// look, with a stronger glow in dark mode where it reads better.
+// ================================================================
+.code-showcase-section {
+  padding: 3rem 0 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.code-window {
+  width: min(100%, 640px);
+  border-radius: 16px;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #6a2fd9 0%, #b3379e 50%, #2f5fed 100%);
+  box-shadow:
+    0 20px 60px -10px rgba(106, 47, 217, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+[data-bs-theme="dark"] .code-window {
+  box-shadow:
+    0 25px 70px -10px rgba(106, 47, 217, 0.65),
+    0 0 40px rgba(47, 95, 237, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+.code-window-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.code-window-titlebar .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.code-window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: $font-family-monospace;
+}
+
+.code-window-body {
+  margin: 0;
+  background: rgba(10, 8, 20, 0.85);
+  border-radius: 10px;
+  padding: 1.5rem;
+  overflow-x: auto;
+  font-family: $font-family-monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.code-line {
+  white-space: pre;
+}
+
+.tok-keyword { color: #7aa2ff; }
+.tok-type { color: #5ee6c8; }
+.tok-property { color: #ff8fc7; }
+.tok-string { color: #9ef29a; }
+.tok-boolean { color: #7aa2ff; }
