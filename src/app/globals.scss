@@ -1,37 +1,101 @@
 // Code & Emmy color palette.
-
+// These variables override Bootstrap's defaults before Bootstrap
+// compiles, so buttons, links, and the navbar all pick up our
+// colors automatically instead of Bootstrap blue.
 $primary:      #2F5FED; // cobalt - main accent (links, buttons, highlights)
 $secondary:    #FFB020; // amber - secondary accent (used sparingly)
-$body-bg:      #FAFAFA;
+$body-bg:      #faf7f2;
 $body-color:   #14151A;
 $border-color: #E4E5EA;
 
 // Bootstrap 5 ships a built-in dark mode. Setting this to true means
 // Bootstrap generates the dark-mode version of every component for
-// us, using the same colors above
+// us, using the same colors above, instead of us hand-writing a
+// second palette that can drift out of sync with the first.
 $enable-dark-mode: true;
 
 // Pull in Bootstrap's actual source (not the precompiled CSS file)
 // so the variables above take effect everywhere.
 @import "bootstrap/scss/bootstrap";
 
-// A short transition so switching between light and dark doesn't
-// feel like a hard flash.
+// Apply the two font families loaded in layout.tsx. Headings and
+// the nav wordmark use the display font; everything else uses the
+// calmer body font.
 body {
   transition: background-color 0.2s ease, color 0.2s ease;
+  font-family: var(--font-body), $font-family-sans-serif;
+  background-color: #faf7f2; // warm off-white, not stark gray
+}
+
+[data-bs-theme="dark"] body {
+  background-color: #100e14;
+}
+
+h1, h2, h3, h4, .site-navbar-brand {
+  font-family: var(--font-heading), $font-family-sans-serif;
+}
+
+a {
+  text-underline-offset: 3px;
 }
 
 // ================================================================
-// Hero section
+// Navbar: plain and quiet, no card, no blur, just text on the page
+// ================================================================
+.site-navbar {
+  padding: 1.5rem 0;
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+[data-bs-theme="dark"] .site-navbar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.site-navbar-brand {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  font-size: 1.15rem;
+}
+
+.site-nav-links .nav-link {
+  font-size: 0.95rem;
+  margin: 0 0.6rem;
+  padding: 0 !important;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  position: relative;
+  color: var(--bs-body-color);
+}
+
+// Underline-on-hover instead of a color swap, a quieter interaction
+.site-nav-links .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.2s ease;
+}
+
+.site-nav-links .nav-link:hover::after {
+  width: 100%;
+}
+
+// ================================================================
+// Hero: name + two identity blocks (Developer / Designer) on the
+// left, a large portrait photo on the right. Stacks on small screens.
 // ================================================================
 .hero-section {
-  padding: 4rem 0 3rem;
+  padding: 4rem 0 5rem;
 }
 
-.hero-grid {
+.hero-intro-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.5rem;
+  gap: 3rem;
   align-items: center;
 
   @media (min-width: 992px) {
@@ -39,61 +103,67 @@ body {
   }
 }
 
-.hero-eyebrow {
-  letter-spacing: 0.08em;
+.hero-greeting {
+  font-size: 1.05rem;
 }
 
-.hero-tagline {
-  max-width: 34rem;
-  font-size: 1.15rem;
+.role-block {
+  margin-bottom: 1.75rem;
 }
 
-// The "Code & Emmy" heading. Several stacked text shadows create a
-// solid, extruded 3D block instead of a flat color. The colors flip
-// between modes so it stays readable and glowing on both.
-.brand-3d {
+.role-label {
+  font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 500;
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  margin: 0.25rem 0 1rem;
   color: $primary;
-  text-shadow:
-    1px 1px 0 #274ec7,
-    2px 2px 0 #2044ad,
-    3px 3px 0 #1a3993,
-    4px 4px 10px rgba(20, 21, 26, 0.35);
+  margin-bottom: 0.35rem;
 }
 
-[data-bs-theme="dark"] .brand-3d {
-  color: #eef2ff;
-  text-shadow:
-    1px 1px 0 #3a5fe0,
-    2px 2px 0 #2f4fc4,
-    3px 3px 0 #253f9e,
-    4px 4px 14px rgba(47, 95, 237, 0.55);
+.role-desc {
+  font-size: 1.05rem;
+  max-width: 30rem;
+  margin-bottom: 0;
 }
 
-// ================================================================
-// Hero photo
-// ================================================================
-.hero-photo {
+.hero-lede {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-top: 2rem;
+
+  a {
+    color: $primary;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+}
+
+.hero-photo-col {
   display: flex;
   justify-content: center;
 }
 
+// ================================================================
+// Photo frame: two shapes sharing one set of image and shadow
+// styles, so the same component works as a rectangular hero photo
+// now and a circular avatar later without duplicating rules.
+// ================================================================
 .hero-photo-img {
-  border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #fff;
-  box-shadow: 0 12px 30px rgba(20, 21, 26, 0.2);
+  box-shadow: 0 16px 40px rgba(20, 21, 26, 0.18);
 }
 
 [data-bs-theme="dark"] .hero-photo-img {
-  border-color: #16181d;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+.photo-frame-rect {
+  border-radius: 20px;
+}
+
+.photo-frame-circle {
+  border-radius: 50%;
 }
 
 .photo-placeholder {
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,78 +172,3 @@ body {
   color: #fff;
   background: linear-gradient(135deg, $primary, $secondary);
 }
-
-// ================================================================
-// Code showcase section
-// The macOS-style code window, built as real markup instead of an
-// image, so the text stays sharp at any size and reacts to the
-// theme toggle. The gradient and glow give it the "3D illuminated"
-// look, with a stronger glow in dark mode where it reads better.
-// ================================================================
-.code-showcase-section {
-  padding: 3rem 0 5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.code-window {
-  width: min(100%, 640px);
-  border-radius: 16px;
-  padding: 2.5rem;
-  background: linear-gradient(135deg, #6a2fd9 0%, #b3379e 50%, #2f5fed 100%);
-  box-shadow:
-    0 20px 60px -10px rgba(106, 47, 217, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
-}
-
-[data-bs-theme="dark"] .code-window {
-  box-shadow:
-    0 25px 70px -10px rgba(106, 47, 217, 0.65),
-    0 0 40px rgba(47, 95, 237, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
-}
-
-.code-window-titlebar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 1.25rem;
-  position: relative;
-}
-
-.code-window-titlebar .dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.code-window-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-family: $font-family-monospace;
-}
-
-.code-window-body {
-  margin: 0;
-  background: rgba(10, 8, 20, 0.85);
-  border-radius: 10px;
-  padding: 1.5rem;
-  overflow-x: auto;
-  font-family: $font-family-monospace;
-  font-size: 0.9rem;
-  line-height: 1.7;
-}
-
-.code-line {
-  white-space: pre;
-}
-
-.tok-keyword { color: #7aa2ff; }
-.tok-type { color: #5ee6c8; }
-.tok-property { color: #ff8fc7; }
-.tok-string { color: #9ef29a; }
-.tok-boolean { color: #7aa2ff; }
