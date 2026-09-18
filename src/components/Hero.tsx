@@ -272,7 +272,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Hi, I&apos;m Emmanuel Oluwadare — a full-stack software developer
+            Hi, I&apos;m Emmanuel Oluwadare - a full-stack software developer and a designer
             based in Dublin, building sleek, market-ready web applications
             from idea to deployment. I bring a decade of experience as an
             educator into how I work: clear communication, structured
