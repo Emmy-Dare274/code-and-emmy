@@ -1,0 +1,22 @@
+// Code & Emmy color palette.
+
+$primary:      #2F5FED; // cobalt - main accent (links, buttons, highlights)
+$secondary:    #FFB020; // amber - secondary accent (used sparingly)
+$body-bg:      #FAFAFA;
+$body-color:   #14151A;
+$border-color: #E4E5EA;
+
+// Bootstrap 5 ships a built-in dark mode. Setting this to true means
+// Bootstrap generates the dark-mode version of every component for
+// us, using the same colors above
+$enable-dark-mode: true;
+
+// Pull in Bootstrap's actual source (not the precompiled CSS file)
+// so the variables above take effect everywhere.
+@import "bootstrap/scss/bootstrap";
+
+// A short transition so switching between light and dark doesn't
+// feel like a hard flash.
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
