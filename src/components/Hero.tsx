@@ -1,9 +1,12 @@
 "use client";
 
-// Interactive hero: hovering the photo's left half (or the developer text)
-// hides the designer column entirely and slides the photo far right, so only
-// developer content and the code snippets are in view. Hovering the right
-// half does the mirror opposite. Clicking the photo goes to /about.
+// Interactive hero: hovering the outer left third of the photo lane (or the
+// developer text) hides the designer column entirely and slides the photo
+// far right, with code snippets visible. Hovering the outer right third (or
+// designer text) does the mirror opposite, with code snippets hidden. The
+// middle third is a dead zone — deliberately does nothing, so resting the
+// cursor near the center doesn't cause any movement. Clicking the photo
+// goes to /about.
 
 import { useState } from "react";
 import Link from "next/link";
@@ -23,10 +26,6 @@ import { FaFigma, FaPenRuler, FaUniversalAccess, FaLayerGroup } from "react-icon
 
 type HoverSide = "left" | "right" | null;
 
-// How far the photo slides toward the opposite side, in pixels. This can be
-// generous because the column it slides into is fully hidden (opacity 0,
-// pointer-events off) whenever this is active — nothing for it to collide
-// with. .hero-section keeps overflow hidden as an outer safety net regardless.
 const PHOTO_TRAVEL = 260;
 
 const devStack = [
@@ -47,9 +46,6 @@ const designSkills = [
   { label: "Design Systems", Icon: FaLayerGroup },
 ];
 
-// Decorative code collage behind the photo. Each line carries a "tone" for
-// lightweight syntax-style coloring (not a real highlighter — just enough
-// to read as colorful code rather than a wall of gray text).
 type CodeLine = { text: string; tone: "keyword" | "type" | "string" | "punct" };
 type CodeFragment = { lines: CodeLine[]; top: string; left: string; rotate: number };
 
@@ -109,10 +105,21 @@ const codeFragments: CodeFragment[] = [
 export default function Hero() {
   const [hover, setHover] = useState<HoverSide>(null);
 
-  function handlePhotoHover(e: React.MouseEvent<HTMLAnchorElement>) {
+  // Measured against the LANE (e.currentTarget), which never moves — only
+  // the photo inside it does. This is the fix for the shaking bug: using
+  // the photo's own rect as the reference created a feedback loop, since
+  // the rect changed as a result of the very state this function sets.
+  function handleLaneHover(e: React.MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
-    const isLeftHalf = e.clientX - rect.left < rect.width / 2;
-    setHover(isLeftHalf ? "left" : "right");
+    const relativeX = (e.clientX - rect.left) / rect.width;
+
+    if (relativeX < 0.33) {
+      setHover("left");
+    } else if (relativeX > 0.67) {
+      setHover("right");
+    } else {
+      setHover(null); // dead zone — the middle third never triggers movement
+    }
   }
 
   const grayscaleClip =
@@ -128,8 +135,6 @@ export default function Hero() {
 
   const photoOffset = hover === "left" ? PHOTO_TRAVEL : hover === "right" ? -PHOTO_TRAVEL : 0;
 
-  // The non-hovered side vanishes completely — invisible and unclickable —
-  // rather than just dimming, so the hovered side genuinely owns the screen.
   const developerHidden = hover === "right";
   const designerHidden = hover === "left";
 
@@ -137,7 +142,7 @@ export default function Hero() {
     <>
       <section className="hero-section">
         <div className="container">
-          <div className="hero-split-grid">
+          <div className="hero-split-grid" data-hover={hover ?? undefined}>
             <div
               className="hero-role-col hero-role-left"
               style={{ opacity: developerHidden ? 0 : 1, pointerEvents: developerHidden ? "none" : "auto" }}
@@ -170,7 +175,12 @@ export default function Hero() {
               </AnimatePresence>
             </div>
 
-            <div className="hero-photo-lane">
+            <div
+              className="hero-photo-lane"
+              onMouseEnter={handleLaneHover}
+              onMouseMove={handleLaneHover}
+              onMouseLeave={() => setHover(null)}
+            >
               <div className="hero-code-bg" aria-hidden="true">
                 {codeFragments.map((fragment, i) => (
                   <div
@@ -196,9 +206,6 @@ export default function Hero() {
                 className="hero-photo-link"
                 aria-label="View more about Emmanuel Oluwadare — About page"
                 style={{ transform: `translateX(${photoOffset}px)` }}
-                onMouseEnter={handlePhotoHover}
-                onMouseMove={handlePhotoHover}
-                onMouseLeave={() => setHover(null)}
               >
                 <div className="hero-photo-split">
                   <Image

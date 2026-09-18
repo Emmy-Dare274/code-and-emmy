@@ -260,8 +260,12 @@ h1, h2, h3, h4, .site-navbar-brand {
   transition: opacity 0.4s ease;
 }
 
-.hero-split-grid[data-hover] .hero-code-bg {
-  opacity: 1;
+.hero-split-grid[data-hover="left"] .hero-code-bg {
+  opacity: 1; // brighten further — code is part of the developer spotlight
+}
+
+.hero-split-grid[data-hover="right"] .hero-code-bg {
+  opacity: 0; // fully hidden — nothing should show alongside designer content
 }
 
 .code-fragment {

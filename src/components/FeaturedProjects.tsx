@@ -1,7 +1,5 @@
-// Two real, finished projects for now — Faaji & Brew AfroMart and Codestar
-// Blog. A third (UX design case study) slots in the same grid the moment
-// its name, description and image are ready; the grid auto-reflows for
-// either 2 or 3 cards, so adding it later is a one-line change.
+// Three real projects: Faaji & Brew AfroMart, Codestar Blog, and the Figma
+// design system case study.
 
 import Image from "next/image";
 import Link from "next/link";
@@ -27,9 +25,17 @@ const projects: Project[] = [
     slug: "codestar-blog",
     title: "Codestar Blog",
     description:
-      "A full-stack Django blog application covering the fundamentals end to end — models, views, templates and deployment. Actively being expanded with new features.",
+      "A full-stack Django blog application built to practice end-to-end web development — models, views, templates and deployment. Actively being expanded with new features.",
     tags: ["Django", "Python", "SQLite"],
     image: "/images/projects/codestar-blog.jpg",
+  },
+  {
+    slug: "figma-design-system",
+    title: "My Figma Design System",
+    description:
+      "A lean, accessible Figma design system built to be intuitive and beautiful, and to fix issues I've seen with many popular design systems.",
+    tags: ["Figma", "Design Systems", "UI/UX"],
+    image: "/images/projects/figma-design-system.png",
   },
 ];
 
