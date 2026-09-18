@@ -1,36 +1,45 @@
 "use client";
 
-// Interactive hero: hovering the "developer" column desaturates the photo
-// and reveals the frontend/backend stack icons underneath it; hovering
-// "designer" restores full color and reveals the design-tool icons instead.
-// The photo itself nudges left/right so it doesn't sit on top of whichever
-// icon row is showing.
+// Interactive hero: hovering the photo's left half (or the developer text)
+// hides the designer column entirely and slides the photo far right, so only
+// developer content and the code snippets are in view. Hovering the right
+// half does the mirror opposite. Clicking the photo goes to /about.
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   SiReact,
   SiTypescript,
+  SiJavascript,
   SiNextdotjs,
   SiDjango,
+  SiPython,
   SiPostgresql,
+  SiGit,
 } from "react-icons/si";
 import { FaFigma, FaPenRuler, FaUniversalAccess, FaLayerGroup } from "react-icons/fa6";
 
 type HoverSide = "left" | "right" | null;
 
-// Stack shown under "developer" on hover
+// How far the photo slides toward the opposite side, in pixels. This can be
+// generous because the column it slides into is fully hidden (opacity 0,
+// pointer-events off) whenever this is active — nothing for it to collide
+// with. .hero-section keeps overflow hidden as an outer safety net regardless.
+const PHOTO_TRAVEL = 260;
+
 const devStack = [
   { label: "React", Icon: SiReact },
   { label: "TypeScript", Icon: SiTypescript },
+  { label: "JavaScript", Icon: SiJavascript },
   { label: "Next.js", Icon: SiNextdotjs },
   { label: "Django", Icon: SiDjango },
+  { label: "Python", Icon: SiPython },
   { label: "PostgreSQL", Icon: SiPostgresql },
+  { label: "Git", Icon: SiGit },
 ];
 
-// Tools shown under "designer" on hover — swap these if Figma isn't your
-// main tool, or if you want to name specific ones instead of generic skills.
 const designSkills = [
   { label: "Figma", Icon: FaFigma },
   { label: "UI/UX Design", Icon: FaPenRuler },
@@ -38,12 +47,74 @@ const designSkills = [
   { label: "Design Systems", Icon: FaLayerGroup },
 ];
 
+// Decorative code collage behind the photo. Each line carries a "tone" for
+// lightweight syntax-style coloring (not a real highlighter — just enough
+// to read as colorful code rather than a wall of gray text).
+type CodeLine = { text: string; tone: "keyword" | "type" | "string" | "punct" };
+type CodeFragment = { lines: CodeLine[]; top: string; left: string; rotate: number };
+
+const codeFragments: CodeFragment[] = [
+  {
+    lines: [
+      { text: "class Project(models.Model):", tone: "keyword" },
+      { text: "    title = models.CharField(max_length=120)", tone: "type" },
+      { text: "    is_live = models.BooleanField(default=True)", tone: "type" },
+    ],
+    top: "6%",
+    left: "4%",
+    rotate: -3,
+  },
+  {
+    lines: [
+      { text: "const fetchProjects = async () => {", tone: "keyword" },
+      { text: '  const res = await fetch("/api/projects");', tone: "string" },
+      { text: "  return res.json();", tone: "punct" },
+      { text: "};", tone: "punct" },
+    ],
+    top: "22%",
+    left: "54%",
+    rotate: 3,
+  },
+  {
+    lines: [
+      { text: '<section class="hero">', tone: "type" },
+      { text: "  <h1>Emmanuel Oluwadare</h1>", tone: "keyword" },
+      { text: "</section>", tone: "type" },
+    ],
+    top: "56%",
+    left: "6%",
+    rotate: -2,
+  },
+  {
+    lines: [
+      { text: "def get_queryset(self):", tone: "keyword" },
+      { text: "    return Project.objects.filter(is_live=True)", tone: "type" },
+    ],
+    top: "76%",
+    left: "52%",
+    rotate: 4,
+  },
+  {
+    lines: [
+      { text: ".card:hover {", tone: "keyword" },
+      { text: "  transform: translateY(-4px);", tone: "string" },
+      { text: "}", tone: "punct" },
+    ],
+    top: "40%",
+    left: "8%",
+    rotate: 2,
+  },
+];
+
 export default function Hero() {
   const [hover, setHover] = useState<HoverSide>(null);
 
-  // The grayscale layer's clip-path sweeps to cover the whole photo when
-  // hovering "developer" (left), and shrinks to nothing when hovering
-  // "designer" (right). At rest it sits at the 50/50 split.
+  function handlePhotoHover(e: React.MouseEvent<HTMLAnchorElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const isLeftHalf = e.clientX - rect.left < rect.width / 2;
+    setHover(isLeftHalf ? "left" : "right");
+  }
+
   const grayscaleClip =
     hover === "left"
       ? "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
@@ -51,21 +122,25 @@ export default function Hero() {
       ? "polygon(0 0, 0 0, 0 100%, 0 100%)"
       : "polygon(0 0, 50% 0, 50% 100%, 0 100%)";
 
-  // The color-wash (duotone tint) layer only shows at rest, on the right
-  // half — any hover state collapses it so the photo reads as either fully
-  // grayscale or fully natural color, never a half-tinted mix.
   const washClip = hover
     ? "polygon(0 0, 0 0, 0 100%, 0 100%)"
     : "polygon(0 0, 50% 0, 50% 100%, 0 100%)";
+
+  const photoOffset = hover === "left" ? PHOTO_TRAVEL : hover === "right" ? -PHOTO_TRAVEL : 0;
+
+  // The non-hovered side vanishes completely — invisible and unclickable —
+  // rather than just dimming, so the hovered side genuinely owns the screen.
+  const developerHidden = hover === "right";
+  const designerHidden = hover === "left";
 
   return (
     <>
       <section className="hero-section">
         <div className="container">
           <div className="hero-split-grid">
-            {/* Developer column */}
             <div
               className="hero-role-col hero-role-left"
+              style={{ opacity: developerHidden ? 0 : 1, pointerEvents: developerHidden ? "none" : "auto" }}
               onMouseEnter={() => setHover("left")}
               onMouseLeave={() => setHover(null)}
             >
@@ -95,38 +170,64 @@ export default function Hero() {
               </AnimatePresence>
             </div>
 
-            {/* Photo — grayscale and color-wash layers are stacked on top
-                of the base photo and their clip-path is animated below */}
-            <motion.div
-              className="hero-photo-split"
-              animate={{ x: hover === "left" ? -14 : hover === "right" ? 14 : 0 }}
-              transition={{ type: "spring", stiffness: 180, damping: 22 }}
-            >
-              <Image
-                src="/images/emmy-hero.jpg"
-                alt="Emmanuel Oluwadare"
-                width={480}
-                height={520}
-                className="photo-base"
-                priority
-              />
-              <motion.div
-                className="photo-grayscale"
-                initial={false}
-                animate={{ clipPath: grayscaleClip }}
-                transition={{ duration: 0.45, ease: "easeInOut" }}
-              />
-              <motion.div
-                className="photo-wash"
-                initial={false}
-                animate={{ clipPath: washClip }}
-                transition={{ duration: 0.45, ease: "easeInOut" }}
-              />
-            </motion.div>
+            <div className="hero-photo-lane">
+              <div className="hero-code-bg" aria-hidden="true">
+                {codeFragments.map((fragment, i) => (
+                  <div
+                    key={i}
+                    className="code-fragment"
+                    style={{
+                      top: fragment.top,
+                      left: fragment.left,
+                      transform: `rotate(${fragment.rotate}deg)`,
+                    }}
+                  >
+                    {fragment.lines.map((line, j) => (
+                      <div key={j} className={`code-line tok-${line.tone}`}>
+                        {line.text}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
 
-            {/* Designer column */}
+              <Link
+                href="/about"
+                className="hero-photo-link"
+                aria-label="View more about Emmanuel Oluwadare — About page"
+                style={{ transform: `translateX(${photoOffset}px)` }}
+                onMouseEnter={handlePhotoHover}
+                onMouseMove={handlePhotoHover}
+                onMouseLeave={() => setHover(null)}
+              >
+                <div className="hero-photo-split">
+                  <Image
+                    src="/images/emmy-hero.jpg"
+                    alt="Emmanuel Oluwadare"
+                    width={480}
+                    height={520}
+                    className="photo-base"
+                    priority
+                  />
+                  <motion.div
+                    className="photo-grayscale"
+                    initial={false}
+                    animate={{ clipPath: grayscaleClip }}
+                    transition={{ duration: 0.45, ease: "easeInOut" }}
+                  />
+                  <motion.div
+                    className="photo-wash"
+                    initial={false}
+                    animate={{ clipPath: washClip }}
+                    transition={{ duration: 0.45, ease: "easeInOut" }}
+                  />
+                </div>
+              </Link>
+            </div>
+
             <div
               className="hero-role-col hero-role-right"
+              style={{ opacity: designerHidden ? 0 : 1, pointerEvents: designerHidden ? "none" : "auto" }}
               onMouseEnter={() => setHover("right")}
               onMouseLeave={() => setHover(null)}
             >
@@ -162,7 +263,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Hi, I&apos;m Emmanuel Oluwadare — a full-stack software developer and a designer
+            Hi, I&apos;m Emmanuel Oluwadare — a full-stack software developer
             based in Dublin, building sleek, market-ready web applications
             from idea to deployment. I bring a decade of experience as an
             educator into how I work: clear communication, structured
@@ -172,7 +273,7 @@ export default function Hero() {
         </div>
       </section>
 
-      <div className="section-heading-divider" id="projects">
+      <div className="section-heading-divider" id="portfolio">
         <span>Some of my latest work</span>
       </div>
     </>

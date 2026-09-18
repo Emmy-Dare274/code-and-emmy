@@ -20,7 +20,7 @@ export default function NavBar() {
           <Nav className="site-nav-links me-auto">
             <Nav.Link as={Link} href="/">home</Nav.Link>
             <Nav.Link as={Link} href="/about">about</Nav.Link>
-            <Nav.Link as={Link} href="/#projects">projects</Nav.Link>
+            <Nav.Link as={Link} href="/#portfolio">portfolio</Nav.Link>
             <Nav.Link as={Link} href="/contact">contact me</Nav.Link>
           </Nav>
 

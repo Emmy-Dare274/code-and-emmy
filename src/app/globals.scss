@@ -117,7 +117,15 @@ h1, h2, h3, h4, .site-navbar-brand {
 .hero-section {
   padding: 4rem 0 0;
   position: relative;
-  overflow: hidden;
+  overflow: hidden; // safety net: clips anything that slides past the viewport edge
+}
+
+// The hero gets extra breathing room beyond Bootstrap's usual container cap —
+// this is what gives the photo real space to travel in on hover. Only this
+// section is affected; the navbar and every other section keep the default
+// container width.
+.hero-section .container {
+  max-width: 1520px;
 }
 
 .hero-split-grid {
@@ -125,14 +133,31 @@ h1, h2, h3, h4, .site-navbar-brand {
   grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: center;
+  // Animates smoothly in current Chrome, Firefox and Safari — the column
+  // that collapses on hover shrinks in place rather than snapping to size.
+  transition: grid-template-columns 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   @media (min-width: 992px) {
-    grid-template-columns: 1fr 1.3fr 1fr;
+    grid-template-columns: 1fr minmax(400px, 1.6fr) 1fr;
+  }
+}
+
+// Spotlight mode: the hovered side's column grows, the opposite side
+// collapses toward zero width (combined with its opacity going to 0 below,
+// it reads as fully gone, not just squeezed).
+@media (min-width: 992px) {
+  .hero-split-grid[data-hover="left"] {
+    grid-template-columns: 1.3fr minmax(400px, 2.2fr) 0fr;
+  }
+  .hero-split-grid[data-hover="right"] {
+    grid-template-columns: 0fr minmax(400px, 2.2fr) 1.3fr;
   }
 }
 
 .hero-role-col {
   text-align: center;
+  overflow: hidden; // keeps text from reflowing awkwardly as its column shrinks
+  transition: opacity 0.4s ease;
 
   @media (min-width: 992px) {
     text-align: left;
@@ -142,6 +167,21 @@ h1, h2, h3, h4, .site-navbar-brand {
 .hero-role-right {
   @media (min-width: 992px) {
     text-align: right;
+  }
+}
+
+// The non-hovered side disappears entirely: invisible, and unreachable by
+// mouse or keyboard while it's gone (pointer-events: none). Hero.tsx also
+// sets aria-hidden on it for screen readers, and drives visibility directly
+// via inline style, so these rules mainly cover the ≥992px collapse above.
+@media (min-width: 992px) {
+  .hero-split-grid[data-hover="left"] .hero-role-right {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .hero-split-grid[data-hover="right"] .hero-role-left {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -201,13 +241,78 @@ h1, h2, h3, h4, .site-navbar-brand {
   color: #f2f2f5;
 }
 
+// The lane the photo lives and travels in. No overflow clipping here —
+// the photo is deliberately allowed to slide past its own edge into the
+// space the collapsed column vacates; .hero-section's overflow:hidden is
+// the outer safety net that stops it ever causing page-level scroll.
+.hero-photo-lane {
+  position: relative;
+}
+
+// Decorative code-snippet collage, visible behind the photo at rest (not
+// just on hover) and brightening further when the hero is being interacted with.
+.hero-code-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none; // purely visual — never intercepts a click
+  opacity: 0.8;
+  transition: opacity 0.4s ease;
+}
+
+.hero-split-grid[data-hover] .hero-code-bg {
+  opacity: 1;
+}
+
+.code-fragment {
+  position: absolute;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.code-line {
+  white-space: pre;
+}
+
+// Lightweight syntax-style coloring — not a real highlighter, just enough
+// tonal variety to read as colorful code rather than a block of gray text.
+.tok-keyword { color: rgba(47, 95, 237, 0.55); }   // cobalt
+.tok-type    { color: rgba(255, 176, 32, 0.65); }  // amber
+.tok-string  { color: rgba(20, 184, 166, 0.6); }   // teal
+.tok-punct   { color: rgba(20, 21, 26, 0.35); }
+
+[data-bs-theme="dark"] .tok-keyword { color: rgba(120, 150, 255, 0.7); }
+[data-bs-theme="dark"] .tok-type    { color: rgba(255, 196, 84, 0.75); }
+[data-bs-theme="dark"] .tok-string  { color: rgba(45, 212, 191, 0.72); }
+[data-bs-theme="dark"] .tok-punct   { color: rgba(255, 255, 255, 0.4); }
+
+// A little more vivid whenever the photo lane is being interacted with.
+.hero-photo-lane:hover .tok-keyword { color: rgba(47, 95, 237, 0.8); }
+.hero-photo-lane:hover .tok-type    { color: rgba(255, 176, 32, 0.9); }
+.hero-photo-lane:hover .tok-string  { color: rgba(20, 184, 166, 0.85); }
+
+// The clickable photo itself — links to /about. Fixed max-width keeps it
+// well inside the lane's guaranteed 400px floor at rest; the translateX
+// slide (set inline from Hero.tsx) is what carries it into the freed-up
+// space on hover.
+.hero-photo-link {
+  display: block;
+  position: relative;
+  z-index: 1;
+  max-width: 300px;
+  width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .hero-photo-split {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(20, 21, 26, 0.18);
-  max-width: 420px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .hero-photo-split .photo-base {
@@ -238,6 +343,17 @@ h1, h2, h3, h4, .site-navbar-brand {
   margin: 3rem auto 0;
   max-width: 46rem;
   text-align: center;
+}
+
+@media (max-width: 576px) {
+  .code-fragment {
+    font-size: 0.7rem !important;
+  }
+
+  // Keep the collage light on small screens — show only the first 3 fragments
+  .code-fragment:nth-child(n + 4) {
+    display: none;
+  }
 }
 
 // ---- Section divider ---------------------------------------------------------
@@ -273,6 +389,148 @@ h1, h2, h3, h4, .site-navbar-brand {
   }
   span {
     color: #A0A3B1;
+  }
+}
+
+// ---- Featured project cards ("Some of my latest work") ------------------------
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1140px;
+  margin: 0 auto 6rem;
+  padding: 0 1rem;
+}
+
+.portfolio-card {
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid $border-color;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(20, 21, 26, 0.14);
+}
+
+[data-bs-theme="dark"] .portfolio-card {
+  background: #17151c;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.portfolio-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: $border-color;
+}
+
+[data-bs-theme="dark"] .portfolio-card-media {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.portfolio-card-body {
+  padding: 1.5rem;
+}
+
+.portfolio-card-title {
+  font-family: var(--font-heading), $font-family-sans-serif;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: $body-color;
+}
+
+[data-bs-theme="dark"] .portfolio-card-title {
+  color: #f2f2f5;
+}
+
+.portfolio-card-desc {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.tech-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tech-pill {
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(47, 95, 237, 0.08);
+  color: $primary;
+  font-weight: 500;
+}
+
+[data-bs-theme="dark"] .tech-pill {
+  background: rgba(47, 95, 237, 0.16);
+  color: #a9bdfb;
+}
+
+// ---- Portfolio detail pages ----------------------------------------------------
+.portfolio-detail-header {
+  padding: 4rem 0 2rem;
+  text-align: center;
+}
+
+.portfolio-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: $primary;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.portfolio-detail-media {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto 3rem;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(20, 21, 26, 0.16);
+  background: $border-color;
+}
+
+.portfolio-detail-body {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 1rem 6rem;
+}
+
+.portfolio-detail-body h2 {
+  font-size: 1.3rem;
+  margin: 2.5rem 0 1rem;
+}
+
+.portfolio-detail-body p {
+  line-height: 1.8;
+}
+
+.portfolio-detail-body ul {
+  padding-left: 1.2rem;
+  line-height: 1.9;
+}
+
+.portfolio-back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  color: $primary;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
 
