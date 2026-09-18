@@ -1,43 +1,42 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.scss";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import ThemeProvider from "@/components/ThemeProvider";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
-// Space Grotesk for headings and the brand mark: it has the bold,
-// slightly geometric character that gives a portfolio site a
-// designed feel instead of looking like default system type.
+// Heading font — exposed as the --font-heading CSS variable in globals.scss
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["500", "700"],
   variable: "--font-heading",
+  display: "swap",
 });
 
-// Inter for body copy: highly legible at small sizes, calm and
-// unobtrusive so it doesn't compete with the display type above.
+// Body font — exposed as the --font-body CSS variable in globals.scss
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500"],
   variable: "--font-body",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Code & Emmy | Full-Stack Software Developer",
+  title: "Code & Emmy | Emmanuel Oluwadare — Full-Stack Developer",
   description:
-    "Portfolio of Emmanuel Oluwadare (Emmy), a full-stack software developer working with React, TypeScript, Next.js, and Django.",
+    "Emmanuel Oluwadare is a full-stack software developer and UX/UI-minded engineer based in Dublin, building sleek, market-ready web applications with React, TypeScript, Next.js and Django.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${inter.variable}`}>
-      <body>
+      <body id="top">
         <ThemeProvider>
           <NavBar />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
