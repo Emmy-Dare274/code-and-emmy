@@ -133,26 +133,12 @@ h1, h2, h3, h4, .site-navbar-brand {
   grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: center;
-  // Animates smoothly in current Chrome, Firefox and Safari — the column
-  // that collapses on hover shrinks in place rather than snapping to size.
-  transition: grid-template-columns 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   @media (min-width: 992px) {
     grid-template-columns: 1fr minmax(400px, 1.6fr) 1fr;
   }
 }
 
-// Spotlight mode: the hovered side's column grows, the opposite side
-// collapses toward zero width (combined with its opacity going to 0 below,
-// it reads as fully gone, not just squeezed).
-@media (min-width: 992px) {
-  .hero-split-grid[data-hover="left"] {
-    grid-template-columns: 1.3fr minmax(400px, 2.2fr) 0fr;
-  }
-  .hero-split-grid[data-hover="right"] {
-    grid-template-columns: 0fr minmax(400px, 2.2fr) 1.3fr;
-  }
-}
 
 .hero-role-col {
   text-align: center;
@@ -170,20 +156,6 @@ h1, h2, h3, h4, .site-navbar-brand {
   }
 }
 
-// The non-hovered side disappears entirely: invisible, and unreachable by
-// mouse or keyboard while it's gone (pointer-events: none). Hero.tsx also
-// sets aria-hidden on it for screen readers, and drives visibility directly
-// via inline style, so these rules mainly cover the ≥992px collapse above.
-@media (min-width: 992px) {
-  .hero-split-grid[data-hover="left"] .hero-role-right {
-    opacity: 0;
-    pointer-events: none;
-  }
-  .hero-split-grid[data-hover="right"] .hero-role-left {
-    opacity: 0;
-    pointer-events: none;
-  }
-}
 
 .role-label {
   font-size: clamp(2.25rem, 5vw, 3.25rem);

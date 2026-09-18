@@ -26,7 +26,9 @@ import { FaFigma, FaPenRuler, FaUniversalAccess, FaLayerGroup } from "react-icon
 
 type HoverSide = "left" | "right" | null;
 
-const PHOTO_TRAVEL = 260;
+// Deliberately leaves visible space at the end of the slide, rather than
+// pushing the photo all the way to the edge.
+const PHOTO_TRAVEL = 180;
 
 const devStack = [
   { label: "React", Icon: SiReact },

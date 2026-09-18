@@ -22,12 +22,12 @@ const projects: Project[] = [
     image: "/images/projects/afromart.jpg",
   },
   {
-    slug: "codestar-blog",
-    title: "Codestar Blog",
+    slug: "boutique-ado",
+    title: "Boutique Ado",
     description:
-      "A full-stack Django blog application built to practice end-to-end web development — models, views, templates and deployment. Actively being expanded with new features.",
-    tags: ["Django", "Python", "SQLite"],
-    image: "/images/projects/codestar-blog.jpg",
+      "A full-stack Django e-commerce store for clothing and homeware, built around a shopping bag, Stripe checkout, a product catalog, and user profiles for order history.",
+    tags: ["Django", "Python", "Stripe", "Bootstrap"],
+    image: "/images/projects/boutique-ado.jpg",
   },
   {
     slug: "figma-design-system",
