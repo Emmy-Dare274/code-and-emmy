@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Code & Emmy
 
-## Getting Started
+A personal portfolio and resume site for Emmanuel Oluwadare ("Emmy"), a full-stack developer and UX designer based. Built to pitch for hiring companies and freelance clients.
 
-First, run the development server:
+**Live site:** [Code & Emmy](https://www.codeandemmy.dev)
 
-```bash
+## Tech stack
+
+- **Next.js 16** (App Router) with TypeScript
+- **Sass/SCSS** with a customized **Bootstrap 5**, light/dark mode via `next-themes`
+- **react-bootstrap** for layout primitives (navbar, etc.)
+- **Framer Motion** for interactive and scroll-triggered animation
+- **react-icons** for tech logos and UI icons
+- **Formspree** for the contact form (no backend or database)
+- **Vitest** + **React Testing Library** for tests
+- Hosted on **Vercel**, custom domain purchased and managed there too
+
+## Getting started
+
+```powershell
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Runs at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Both `dev` and `build` force webpack (`--webpack` flag) instead of Next's default Turbopack bundler. Turbopack currently can't resolve Bootstrap's internal Sass imports in this project, this is a known limitation, not a project misconfiguration, and it's expected to go away in a future Next.js release.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment variables
 
-## Learn More
+Create a `.env.local` file (already gitignored, never commit it):
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Used to build absolute URLs for metadata, the sitemap, `robots.txt`, and the Open Graph image. If it's unset or malformed, `src/lib/site-url.ts` catches that and falls back safely to the production URL instead of crashing the build, see `src/lib/site-url.test.ts` for the regression test covering exactly that failure mode.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+| Command | What it does |
+|---|---|
+| `npm run dev` | Local dev server |
+| `npm run build` | Production build |
+| `npm start` | Run the production build locally |
+| `npm run lint` | ESLint |
+| `npm run test` | Run the test suite once |
+| `npm run test:watch` | Run tests in watch mode |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
+src/
+app/
+layout.tsx Root layout, site-wide metadata
+page.tsx Home page (hero + featured projects)
+globals.scss All styling
+sitemap.ts / robots.ts Auto-generated for search engines
+opengraph-image.tsx Auto-generated social share image
+about/page.tsx
+contact/page.tsx
+portfolio/
+faaji-brew-afromart/page.tsx
+boutique-ado/page.tsx
+figma-design-system/page.tsx
+components/
+NavBar.tsx / Footer.tsx
+Hero.tsx / FeaturedProjects.tsx
+ContactForm.tsx Formspree submission, honeypot, auto-redirect
+ScrollReveal.tsx Framer Motion scroll-in-view wrapper
+ThemeProvider.tsx / ThemeToggle.tsx
+PersonJsonLd.tsx Structured data for search engines
+lib/
+social-links.ts
+site-url.ts Validated NEXT_PUBLIC_SITE_URL reader
+public/
+images/
+cv/
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Deployment
+
+Connected to this GitHub repo, deploys automatically on every push to `main`. Domain (`codeandemmy.dev`) was purchased directly through Vercel, which auto-manages its DNS and SSL.
+
+## SEO
+
+- `sitemap.xml` and `robots.txt` generated from `src/app/sitemap.ts` / `robots.ts`
+- Person structured data (JSON-LD) via `src/components/PersonJsonLd.tsx`
+- Auto-generated Open Graph image for social link previews
+- Submitted to Google Search Console
+
+## Contact form
+
+No backend, submissions go straight to Formspree from the browser. Includes a honeypot field for basic spam filtering and automatically redirects back to the home page a couple of seconds after a successful send.
+
