@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SiDjango, SiReact } from "react-icons/si";
 import { FaFigma, FaChalkboardUser, FaTrophy } from "react-icons/fa6";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "About",
@@ -44,97 +45,126 @@ const audiences = [
   },
 ];
 
+const proofProjects = [
+  {
+    slug: "faaji-brew-afromart",
+    title: "Faaji & Brew AfroMart",
+    body: "A Django and PostgreSQL e-commerce store with Stripe payments, built with 116 automated tests and PEP8-compliant code.",
+  },
+  {
+    slug: "boutique-ado",
+    title: "Boutique Ado",
+    body: "A full-stack Django store for clothing and homeware, with a persistent shopping bag, checkout, and order history.",
+  },
+  {
+    slug: "figma-design-system",
+    title: "My Figma Design System",
+    body: "A lean, accessible design system built to fix issues I've seen in many popular ones.",
+  },
+];
+
 export default function AboutPage() {
   return (
     <main>
       <header className="about-hero">
         <div className="container">
-          <div className="about-hero-grid">
-            <div className="about-hero-copy">
-              <span className="role-label">About</span>
-              <h1>
-                Hi, I&apos;m Emmanuel. Most people call me{" "}
-                <span className="text-highlight">Emmy</span>.
-              </h1>
-              <p className="text-muted-soft about-lede">
-                Full-Stack Software Developer and UX Designer from Nigeria,
-                based in Dublin and available to companies worldwide and for
-                freelance projects.
-              </p>
-              <p className="text-muted-soft">
-                Before software development, I spent 15 years as an
-                internationally qualified teacher in international schools,
-                teaching English, Computer Science and project-based
-                learning. I hold two Master&apos;s degrees (an M.Ed in
-                Management and Leadership and an M.A. in TESOL) and a PGCE. A
-                love of technology and problem-solving led me to retrain as a
-                developer, and I earned a Level 5 British Diploma in
-                Full-Stack Software Development from Code Institute, Dublin,
-                in 2026. I now build production-ready web applications with
-                Django, React, TypeScript and PostgreSQL.
-              </p>
+          <ScrollReveal>
+            <div className="about-hero-grid">
+              <div className="about-hero-copy">
+                <span className="role-label">About</span>
+                <h1>
+                  Hi, I&apos;m Emmanuel. Most people call me{" "}
+                  <span className="text-highlight">Emmy</span>.
+                </h1>
+                <p className="text-muted-soft about-lede">
+                  Full-Stack Software Developer and UX Designer from Nigeria,
+                  based in Dublin and available to companies worldwide and
+                  for freelance projects.
+                </p>
+                <p className="text-muted-soft">
+                  Before software development, I spent 15 years as an
+                  internationally qualified teacher in international
+                  schools, teaching English, Computer Science and
+                  project-based learning. I hold two Master&apos;s degrees
+                  (an M.Ed in Management and Leadership and an M.A. in
+                  TESOL) and a PGCE. A love of technology and
+                  problem-solving led me to retrain as a developer, and I
+                  earned a Level 5 British Diploma in Full-Stack Software
+                  Development from Code Institute, Dublin, in 2026. I now
+                  build production-ready web applications with Django,
+                  React, TypeScript and PostgreSQL.
+                </p>
+              </div>
+              <div className="about-hero-media">
+                <Image
+                  src="/images/about-emmy.jpg"
+                  alt="Emmanuel Oluwadare"
+                  width={420}
+                  height={520}
+                  className="about-photo"
+                  priority
+                />
+              </div>
             </div>
-            <div className="about-hero-media">
-              <Image
-                src="/images/about-emmy.jpg"
-                alt="Emmanuel Oluwadare"
-                width={420}
-                height={520}
-                className="about-photo"
-                priority
-              />
-            </div>
-          </div>
+          </ScrollReveal>
         </div>
       </header>
 
       <section className="about-section">
         <div className="container">
-          <h2>My story</h2>
-          <div className="about-story">
-            <p className="text-muted-soft">
-              That teaching career built the skills I use every day as a
-              developer: explaining complex ideas clearly, breaking big
-              problems into structured steps, and designing solutions around
-              real people.
-            </p>
-            <p className="text-muted-soft">
-              My work includes a Django and PostgreSQL e-commerce platform
-              with Stripe payments and 116 automated tests, a restaurant
-              booking system, and a JavaScript quiz game that earned a Merit
-              grade in a formal assessment. In January 2024, I led a team of
-              six to the 1st Place Exceptional Award at the UK and Ireland
-              hackathon with Broker Buddy, a stock investment platform we
-              designed, built and deployed to Heroku within the deadline.
-            </p>
-            <p className="text-muted-soft">
-              I&apos;ve worked in Agile teams as a developer and Scrum
-              Master, and design is the other half of what I do. I plan user
-              journeys and wireframes before writing code, and I&apos;ve been
-              developing my UI/UX skills, including design systems, so that
-              what I build is both clean under the hood and easy to use.
-            </p>
-          </div>
-          <div className="achievement-banner">
-            <FaTrophy aria-hidden="true" />
-            <span>
-              1st Place Exceptional Award, UK &amp; Ireland Hackathon 2024,
-              team lead for Broker Buddy
-            </span>
-          </div>
+          <ScrollReveal>
+            <h2>My story</h2>
+            <div className="about-story">
+              <p className="text-muted-soft">
+                That teaching career built the skills I use every day as a
+                developer: explaining complex ideas clearly, breaking big
+                problems into structured steps, and designing solutions
+                around real people.
+              </p>
+              <p className="text-muted-soft">
+                My work includes a Django and PostgreSQL e-commerce platform
+                with Stripe payments and 116 automated tests, a restaurant
+                booking system, and a JavaScript quiz game that earned a
+                Merit grade in a formal assessment. In January 2024, I led a
+                team of six to the 1st Place Exceptional Award at the UK and
+                Ireland hackathon with Broker Buddy, a stock investment
+                platform we designed, built and deployed to Heroku within
+                the deadline.
+              </p>
+              <p className="text-muted-soft">
+                I&apos;ve worked in Agile teams as a developer and Scrum
+                Master, and design is the other half of what I do. I plan
+                user journeys and wireframes before writing code, and
+                I&apos;ve been developing my UI/UX skills, including design
+                systems, so that what I build is both clean under the hood
+                and easy to use.
+              </p>
+            </div>
+            <div className="achievement-banner">
+              <FaTrophy aria-hidden="true" />
+              <span>
+                1st Place Exceptional Award, UK &amp; Ireland Hackathon 2024,
+                team lead for Broker Buddy
+              </span>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       <section className="about-section about-section-alt">
         <div className="container">
-          <h2>What I do</h2>
+          <ScrollReveal>
+            <h2>What I do</h2>
+          </ScrollReveal>
           <div className="about-pillars">
-            {pillars.map(({ icon: Icon, title, body }) => (
-              <div className="pillar-card" key={title}>
-                <Icon aria-hidden="true" className="pillar-icon" />
-                <h3>{title}</h3>
-                <p className="text-muted-soft">{body}</p>
-              </div>
+            {pillars.map(({ icon: Icon, title, body }, i) => (
+              <ScrollReveal key={title} delay={i * 0.08}>
+                <div className="pillar-card">
+                  <Icon aria-hidden="true" className="pillar-icon" />
+                  <h3>{title}</h3>
+                  <p className="text-muted-soft">{body}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -142,13 +172,17 @@ export default function AboutPage() {
 
       <section className="about-section">
         <div className="container">
-          <h2>Who I work with</h2>
+          <ScrollReveal>
+            <h2>Who I work with</h2>
+          </ScrollReveal>
           <div className="audience-grid">
-            {audiences.map(({ title, body }) => (
-              <div className="audience-card" key={title}>
-                <h3>{title}</h3>
-                <p className="text-muted-soft">{body}</p>
-              </div>
+            {audiences.map(({ title, body }, i) => (
+              <ScrollReveal key={title} delay={i * 0.1}>
+                <div className="audience-card">
+                  <h3>{title}</h3>
+                  <p className="text-muted-soft">{body}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -156,58 +190,48 @@ export default function AboutPage() {
 
       <section className="about-section about-section-alt">
         <div className="container">
-          <h2>Proof, not just claims</h2>
-          <p className="text-muted-soft about-section-intro">
-            Two live e-commerce applications and a design system I built from
-            scratch. Each one has a shopping bag or checkout flow, user
-            accounts, and a real product catalog, not a tutorial clone.
-          </p>
+          <ScrollReveal>
+            <h2>Proof, not just claims</h2>
+            <p className="text-muted-soft about-section-intro">
+              Two live e-commerce applications and a design system I built
+              from scratch. Each one has a shopping bag or checkout flow,
+              user accounts, and a real product catalog, not a tutorial
+              clone.
+            </p>
+          </ScrollReveal>
           <div className="proof-grid">
-            <Link href="/portfolio/faaji-brew-afromart" className="proof-card">
-              <h3>Faaji &amp; Brew AfroMart</h3>
-              <p className="text-muted-soft">
-                A Django and PostgreSQL e-commerce store with Stripe payments,
-                built with 116 automated tests and PEP8-compliant code.
-              </p>
-              <span className="portfolio-back-link">View project →</span>
-            </Link>
-            <Link href="/portfolio/boutique-ado" className="proof-card">
-              <h3>Boutique Ado</h3>
-              <p className="text-muted-soft">
-                A full-stack Django store for clothing and homeware, with a
-                persistent shopping bag, checkout, and order history.
-              </p>
-              <span className="portfolio-back-link">View project →</span>
-            </Link>
-            <Link href="/portfolio/figma-design-system" className="proof-card">
-              <h3>My Figma Design System</h3>
-              <p className="text-muted-soft">
-                A lean, accessible design system built to fix issues I&apos;ve
-                seen in many popular ones.
-              </p>
-              <span className="portfolio-back-link">View project →</span>
-            </Link>
+            {proofProjects.map(({ slug, title, body }, i) => (
+              <ScrollReveal key={slug} delay={i * 0.08}>
+                <Link href={`/portfolio/${slug}`} className="proof-card">
+                  <h3>{title}</h3>
+                  <p className="text-muted-soft">{body}</p>
+                  <span className="portfolio-back-link">View project →</span>
+                </Link>
+              </ScrollReveal>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="about-section">
         <div className="container about-cta">
-          <p className="about-availability">
-            Available to companies worldwide and for freelance projects.
-          </p>
-          <div className="about-cta-buttons">
-            <Link href="/contact" className="btn btn-primary">
-              Get in touch
-            </Link>
-            <a
-              href="/cv/emmanuel-oluwadare-cv.pdf"
-              className="btn btn-outline-secondary"
-              download
-            >
-              Download CV
-            </a>
-          </div>
+          <ScrollReveal>
+            <p className="about-availability">
+              Available to companies worldwide and for freelance projects.
+            </p>
+            <div className="about-cta-buttons">
+              <Link href="/contact" className="btn btn-primary">
+                Get in touch
+              </Link>
+              <a
+                href="/cv/emmanuel-oluwadare-cv.pdf"
+                className="btn btn-outline-secondary"
+                download
+              >
+                Download CV
+              </a>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </main>

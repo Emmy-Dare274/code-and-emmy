@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -8,6 +9,18 @@ const FORMSPREE_ENDPOINT = "https://formspree.io/f/xqpaplvd";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<FormState>("idle");
+  const router = useRouter();
+
+  // Once the message sends, hold the confirmation on screen briefly so the
+  // visitor actually reads it, then send them back home rather than
+  // stranding them on a spent form.
+  useEffect(() => {
+    if (status !== "success") return;
+    const redirectTimer = setTimeout(() => {
+      router.push("/");
+    }, 2500);
+    return () => clearTimeout(redirectTimer);
+  }, [status, router]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,7 +58,7 @@ export default function ContactForm() {
     return (
       <p className="form-success">
         Thanks for reaching out. I&apos;ll get back to you within 24 to 48
-        hours.
+        hours. Taking you back home...
       </p>
     );
   }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 import ContactForm from "@/components/ContactForm";
 import { SOCIAL_LINKS } from "@/lib/social-links";
@@ -14,12 +15,26 @@ export default function ContactPage() {
     <main>
       <header className="contact-hero">
         <div className="container">
-          <span className="role-label">Contact</span>
-          <h1>Let&apos;s build something.</h1>
-          <p className="text-muted-soft">
-            Open to full-time roles, contract work, and freelance projects
-            worldwide. I usually reply within 24 to 48 hours.
-          </p>
+          <div className="contact-hero-grid">
+            <div className="contact-hero-copy">
+              <span className="role-label">Contact</span>
+              <h1>Let&apos;s build something.</h1>
+              <p className="text-muted-soft">
+                Open to full-time roles, contract work, and freelance
+                projects worldwide. I usually reply within 24 to 48 hours.
+              </p>
+            </div>
+            <div className="contact-hero-media">
+              <Image
+                src="/images/contact-workspace.png"
+                alt="A developer's workspace with a laptop, notebook and coffee"
+                width={480}
+                height={320}
+                className="contact-hero-photo"
+                priority
+              />
+            </div>
+          </div>
         </div>
       </header>
 

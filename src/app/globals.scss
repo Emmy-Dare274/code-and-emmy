@@ -867,3 +867,118 @@ h1, h2, h3, h4, .site-navbar-brand {
   color: #d92d20;
   font-size: 0.9rem;
 }
+
+// ==========================================================================
+// About page: card interactivity
+// ==========================================================================
+.pillar-card,
+.audience-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: $primary;
+    box-shadow: 0 12px 28px rgba(20, 21, 26, 0.08);
+  }
+}
+
+[data-bs-theme="dark"] .pillar-card:hover,
+[data-bs-theme="dark"] .audience-card:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.proof-card:hover {
+  box-shadow: 0 12px 28px rgba(20, 21, 26, 0.08);
+}
+
+[data-bs-theme="dark"] .proof-card:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+// ==========================================================================
+// Contact page: hero image, stable form height, visible fields
+// ==========================================================================
+.contact-hero-grid {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+  text-align: left;
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+.contact-hero-copy h1 {
+  margin: 0.75rem 0 1rem;
+}
+
+.contact-hero-media {
+  display: flex;
+  justify-content: center;
+}
+
+.contact-hero-photo {
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 0 20px 40px rgba(20, 21, 26, 0.12);
+}
+
+[data-bs-theme="dark"] .contact-hero-photo {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.contact-form-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 28rem;
+}
+
+.form-success {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+}
+
+.form-group {
+  input,
+  select,
+  textarea {
+    background: #ffffff;
+    border: 1px solid $border-color;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+
+    &:hover {
+      border-color: rgba(47, 95, 237, 0.5);
+    }
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba(47, 95, 237, 0.15);
+    }
+  }
+}
+
+[data-bs-theme="dark"] .form-group {
+  input,
+  select,
+  textarea {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: $border-color;
+
+    &:hover {
+      border-color: rgba(47, 95, 237, 0.6);
+    }
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba(47, 95, 237, 0.25);
+    }
+  }
+}

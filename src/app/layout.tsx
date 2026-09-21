@@ -67,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable}`}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
     >
       <body id="top">
         <PersonJsonLd />
