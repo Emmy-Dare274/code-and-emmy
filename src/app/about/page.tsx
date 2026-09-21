@@ -1,9 +1,41 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { SiDjango, SiReact } from "react-icons/si";
-import { FaFigma, FaChalkboardUser, FaTrophy } from "react-icons/fa6";
+import {
+  SiDjango,
+  SiReact,
+  SiNextdotjs,
+  SiTypescript,
+  SiJavascript,
+  SiHtml5,
+  SiCss,
+  SiBootstrap,
+  SiFramer,
+  SiPython,
+  SiPostgresql,
+  SiNodedotjs,
+  SiFlask,
+  SiSharp,
+  SiMongodb,
+  SiMysql,
+  SiSqlite,
+  SiGit,
+  SiGithub,
+  SiFigma,
+  SiStripe,
+  SiCloudinary,
+  SiVercel,
+} from "react-icons/si";
+import {
+  FaFigma,
+  FaChalkboardUser,
+  FaTrophy,
+  FaCloud,
+  FaDatabase,
+  FaAws,
+} from "react-icons/fa6";
 import ScrollReveal from "@/components/ScrollReveal";
+import SkillMeter from "@/components/SkillMeter";
+import AboutPhoto from "@/components/AboutPhoto";
 
 export const metadata: Metadata = {
   title: "About",
@@ -63,6 +95,61 @@ const proofProjects = [
   },
 ];
 
+// Every badge below is a technology I've actually used, either shipped in a
+// live project on this site or learned and practiced independently.
+const skillCategories = [
+  {
+    category: "Frontend",
+    accent: "frontend",
+    items: [
+      { label: "React", icon: SiReact },
+      { label: "Next.js", icon: SiNextdotjs },
+      { label: "TypeScript", icon: SiTypescript },
+      { label: "JavaScript", icon: SiJavascript },
+      { label: "HTML5", icon: SiHtml5 },
+      { label: "CSS3 / Sass", icon: SiCss },
+      { label: "Bootstrap", icon: SiBootstrap },
+      { label: "Framer Motion", icon: SiFramer },
+    ],
+  },
+  {
+    category: "Backend",
+    accent: "backend",
+    items: [
+      { label: "Django", icon: SiDjango },
+      { label: "Python", icon: SiPython },
+      { label: "Node.js", icon: SiNodedotjs },
+      { label: "Flask", icon: SiFlask },
+      { label: "C#", icon: SiSharp },
+    ],
+  },
+  {
+    category: "Databases",
+    accent: "database",
+    items: [
+      { label: "PostgreSQL", icon: SiPostgresql },
+      { label: "MongoDB", icon: SiMongodb },
+      { label: "MySQL", icon: SiMysql },
+      { label: "SQLite", icon: SiSqlite },
+      { label: "NoSQL", icon: FaDatabase },
+    ],
+  },
+  {
+    category: "Stack & Tools",
+    accent: "tools",
+    items: [
+      { label: "Git", icon: SiGit },
+      { label: "GitHub", icon: SiGithub },
+      { label: "Figma", icon: SiFigma },
+      { label: "Stripe", icon: SiStripe },
+      { label: "Cloudinary", icon: SiCloudinary },
+      { label: "Vercel", icon: SiVercel },
+      { label: "Heroku", icon: FaCloud },
+      { label: "AWS", icon: FaAws },
+    ],
+  },
+];
+
 export default function AboutPage() {
   return (
     <main>
@@ -96,13 +183,11 @@ export default function AboutPage() {
                 </p>
               </div>
               <div className="about-hero-media">
-                <Image
+                <AboutPhoto
                   src="/images/about-emmy.jpg"
                   alt="Emmanuel Oluwadare"
                   width={420}
                   height={520}
-                  className="about-photo"
-                  priority
                 />
               </div>
             </div>
@@ -146,6 +231,23 @@ export default function AboutPage() {
                 1st Place Exceptional Award, UK &amp; Ireland Hackathon 2024,
                 team lead for Broker Buddy
               </span>
+            </div>
+            <div className="about-cta-inline">
+              <p className="about-availability">
+                Available to companies worldwide and for freelance projects.
+              </p>
+              <div className="about-cta-buttons">
+                <Link href="/contact" className="btn btn-primary">
+                  Get in touch
+                </Link>
+                <a
+                  href="/cv/emmanuel-oluwadare-cv.pdf"
+                  className="btn btn-outline-secondary"
+                  download
+                >
+                  Download CV
+                </a>
+              </div>
             </div>
           </ScrollReveal>
         </div>
@@ -213,24 +315,62 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="about-section">
-        <div className="container about-cta">
+      <section className="about-section about-section-alt">
+        <div className="container">
           <ScrollReveal>
-            <p className="about-availability">
-              Available to companies worldwide and for freelance projects.
+            <h2>Skills &amp; Technologies</h2>
+            <p className="text-muted-soft about-section-intro">
+              The stack I build with, every item below is something I&apos;ve
+              shipped in a live project or learned and practiced hands-on,
+              not a resume word-cloud.
             </p>
-            <div className="about-cta-buttons">
-              <Link href="/contact" className="btn btn-primary">
-                Get in touch
-              </Link>
-              <a
-                href="/cv/emmanuel-oluwadare-cv.pdf"
-                className="btn btn-outline-secondary"
-                download
-              >
-                Download CV
-              </a>
+          </ScrollReveal>
+
+          <div className="skills-grid">
+            {skillCategories.map(({ category, accent, items }, i) => (
+              <ScrollReveal key={category} delay={i * 0.08}>
+                <div className={`skill-category skill-category--${accent}`}>
+                  <h3 className="skill-category-title">{category}</h3>
+                  <div className="skill-badge-row">
+                    {items.map(({ label, icon: Icon }) => (
+                      <span
+                        className={`skill-badge skill-badge--${accent}`}
+                        key={label}
+                      >
+                        <Icon aria-hidden="true" />
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <ScrollReveal delay={0.3}>
+            <div className="skill-meter-wrap">
+              <SkillMeter label="Agile & Scrum" level={90} />
             </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="collab-section">
+        <div className="container">
+          <ScrollReveal>
+            <span className="collab-eyebrow">Ready to Collaborate?</span>
+            <h2 className="collab-heading">
+              Let&apos;s build something remarkable!
+            </h2>
+            <p className="collab-text">
+              Whether you need a ready-to-ship, maintainable full-stack
+              application, a modern and aesthetic design system exploration,
+              or a market-ready e-commerce platform, I bring the same
+              quality and hands-on attention to detail to every project.
+            </p>
+            <Link href="/contact" className="collab-cta">
+              Connect for a project
+            </Link>
           </ScrollReveal>
         </div>
       </section>

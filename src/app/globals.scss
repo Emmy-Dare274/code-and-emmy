@@ -510,7 +510,7 @@ h1, h2, h3, h4, .site-navbar-brand {
   }
 }
 
-// ---- Footer ---------------------------------------------------------------------
+// ---- Footer
 .site-footer {
   margin-top: 6rem;
   padding: 3rem 0 2rem;
@@ -741,21 +741,21 @@ h1, h2, h3, h4, .site-navbar-brand {
   }
 }
 
-.about-cta {
-  text-align: center;
+.about-cta-inline {
+  margin-top: 2rem;
 }
 
 .about-availability {
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .about-cta-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: center;
   flex-wrap: wrap;
 }
+
 
 // ==========================================================================
 // Contact page
@@ -1085,4 +1085,249 @@ body {
   display: block;
   width: 100%;
   height: auto;
+}
+
+// ---- Skills & Technologies section (About page) --------------------------------
+.skills-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-bottom: 2.5rem;
+}
+
+// Each card is deliberately dark regardless of site-wide light/dark mode,
+// a fixed "premium dark glass" treatment that sits inside the light
+// about-section-alt background for contrast, with a colored top bar and a
+// soft blurred glow in the corner, both keyed to the category's accent
+// color. This is what replaced the plain white cards.
+.skill-category {
+  position: relative;
+  overflow: hidden;
+  padding: 1.75rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(160deg, #1c1d26, #101114);
+  box-shadow: 0 20px 40px rgba(20, 21, 26, 0.18);
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 56px rgba(20, 21, 26, 0.3);
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    filter: blur(50px);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+}
+
+.skill-category--frontend::before {
+  background: linear-gradient(90deg, #2f5fed, #7c9bff);
+}
+.skill-category--frontend::after {
+  background: #2f5fed;
+}
+
+.skill-category--backend::before {
+  background: linear-gradient(90deg, #059669, #34d399);
+}
+.skill-category--backend::after {
+  background: #059669;
+}
+
+.skill-category--database::before {
+  background: linear-gradient(90deg, #7c3aed, #c4b5fd);
+}
+.skill-category--database::after {
+  background: #7c3aed;
+}
+
+.skill-category--tools::before {
+  background: linear-gradient(90deg, #ffb020, #ffd27a);
+}
+
+.skill-category--tools::after {
+  background: #ffb020;
+}
+
+.skill-category-title {
+  position: relative;
+  font-size: 1.05rem;
+  margin-bottom: 1.1rem;
+  color: #f5f5f7;
+}
+
+.skill-badge-row {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  transition: transform 0.2s ease;
+
+  svg {
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Badges always sit on a dark card now, so there's one set of values, not
+// a light/dark-mode pair, tuned to be legible and vivid against the card.
+.skill-badge--frontend {
+  background: rgba(47, 95, 237, 0.22);
+  color: #a9bdfb;
+}
+
+.skill-badge--backend {
+  background: rgba(5, 150, 105, 0.24);
+  color: #6ee7b7;
+}
+
+.skill-badge--database {
+  background: rgba(124, 58, 237, 0.24);
+  color: #c4b5fd;
+}
+
+.skill-badge--tools {
+  background: rgba(255, 176, 32, 0.24);
+  color: #ffd27a;
+}
+
+.skill-meter-wrap {
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.skill-meter-label {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.skill-meter-value {
+  color: $primary;
+}
+
+[data-bs-theme="dark"] .skill-meter-value {
+  color: #a9bdfb;
+}
+
+.skill-meter-track {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(20, 21, 26, 0.08);
+  overflow: hidden;
+}
+
+[data-bs-theme="dark"] .skill-meter-track {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.skill-meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, $primary, $secondary);
+}
+
+// ---- "Ready to Collaborate?" section (About page) -------------------------------
+.collab-section {
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 0;
+  margin-top: 3rem;
+  // .site-footer below has margin-top: 6rem, which is what was creating
+  // the light gap between this section and the footer. Cancelling it here
+  // (rather than touching the shared footer rule, which other pages rely
+  // on) is what lets this specific section sit flush against the footer.
+  margin-bottom: -6rem;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(47, 95, 237, 0.35), transparent 55%),
+    radial-gradient(circle at 85% 100%, rgba(255, 176, 32, 0.12), transparent 50%),
+    #0b0b0d;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+}
+
+.collab-eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $secondary;
+  margin-bottom: 0.75rem;
+}
+
+.collab-heading {
+  font-family: var(--font-heading), $font-family-sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  color: #fff;
+  margin-bottom: 1.25rem;
+}
+
+.collab-text {
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+.collab-cta {
+  display: inline-block;
+  background: $primary;
+  color: #fff;
+  padding: 0.75rem 2.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.collab-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgba(47, 95, 237, 0.35);
+  color: #fff;
+}
+
+@media (max-width: 400px) {
+  .collab-section {
+    padding: 3.5rem 0;
+  }
+
+  .collab-text {
+    font-size: 0.95rem;
+  }
 }
