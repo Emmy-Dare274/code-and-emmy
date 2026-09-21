@@ -24,6 +24,7 @@ describe("sitemap", () => {
     expect(urls).toContain("https://example.com/portfolio/faaji-brew-afromart");
     expect(urls).toContain("https://example.com/portfolio/boutique-ado");
     expect(urls).toContain("https://example.com/portfolio/figma-design-system");
+    expect(urls).toContain("https://example.com/portfolio/broker-buddy");
   });
 
   it("gives the home page the highest priority", async () => {

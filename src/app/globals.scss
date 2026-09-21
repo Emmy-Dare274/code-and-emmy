@@ -1063,3 +1063,26 @@ body {
     max-width: 100%;
   }
 }
+
+
+// ---- Portfolio detail secondary gallery image (natural ratio, not cropped) --
+.portfolio-gallery-image {
+  width: 100%;
+  max-width: 900px;
+  margin: 2.5rem auto 0.5rem;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid $border-color;
+  background: #fff;
+}
+
+[data-bs-theme="dark"] .portfolio-gallery-image {
+  background: #17151c;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.portfolio-gallery-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

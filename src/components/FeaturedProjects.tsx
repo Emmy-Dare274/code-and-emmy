@@ -1,5 +1,5 @@
-// Three real projects: Faaji & Brew AfroMart, Codestar Blog, and the Figma
-// design system case study.
+// Four real projects: Faaji & Brew AfroMart, Boutique Ado, the Figma
+// design system case study, and Broker Buddy.
 
 import Image from "next/image";
 import Link from "next/link";
@@ -36,6 +36,14 @@ const projects: Project[] = [
       "A lean, accessible Figma design system built to be intuitive and beautiful, and to fix issues I've seen with many popular design systems.",
     tags: ["Figma", "Design Systems", "UI/UX"],
     image: "/images/projects/figma-design-system.png",
+  },
+  {
+    slug: "broker-buddy",
+    title: "Broker Buddy",
+    description:
+      "A stock-trading simulator built with a six-developer team in an Agile sprint for a UK & Ireland hackathon — 1st Place Exceptional Award. My focus was collaborative feature delivery under a hard deadline.",
+    tags: ["Django", "Python", "Bootstrap", "Agile"],
+    image: "/images/projects/broker-buddy.png",
   },
 ];
 
