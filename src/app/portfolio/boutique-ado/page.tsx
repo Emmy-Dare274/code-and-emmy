@@ -56,6 +56,15 @@ export default function BoutiqueAdoPage() {
           fundamentals-first approach as my other Django projects.
         </p>
 
+        <Link
+          href="https://boutique-ado-emmy-2e285a941475.herokuapp.com/"
+          className="portfolio-back-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View live demo →
+        </Link>
+        <br />
         <Link href="https://github.com/Emmy-Dare274/boutique_ado_v26" className="portfolio-back-link" target="_blank" rel="noopener noreferrer">
           View source on GitHub →
         </Link>

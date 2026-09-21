@@ -69,6 +69,15 @@ export default function AfroMartPage() {
           manual test pass including real Stripe transactions.
         </p>
 
+        <Link
+          href="https://faaji-brew-afromart-0cba904df962.herokuapp.com/"
+          className="portfolio-back-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View live demo →
+        </Link>
+        <br />
         <Link href="https://github.com/Emmy-Dare274/faaji-brew-afromart" className="portfolio-back-link" target="_blank" rel="noopener noreferrer">
           View source on GitHub →
         </Link>
