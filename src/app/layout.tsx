@@ -4,6 +4,7 @@ import ThemeProvider from "@/components/ThemeProvider";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import PersonJsonLd from "@/components/PersonJsonLd";
+import { getBaseUrl } from "@/lib/site-url";
 import "./globals.scss";
 
 const spaceGrotesk = Space_Grotesk({
@@ -18,7 +19,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.codeandemmy.dev";
+const baseUrl = getBaseUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

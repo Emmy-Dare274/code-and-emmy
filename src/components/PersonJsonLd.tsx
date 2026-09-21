@@ -1,6 +1,7 @@
 import { SOCIAL_LINKS } from "@/lib/social-links";
+import { getBaseUrl } from "@/lib/site-url";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.codeandemmy.dev";
+const baseUrl = getBaseUrl();
 
 export default function PersonJsonLd() {
   // Only include real profile URLs. Placeholder "#" links get filtered out

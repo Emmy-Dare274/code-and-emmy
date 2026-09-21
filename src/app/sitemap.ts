@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { getBaseUrl } from "@/lib/site-url";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.codeandemmy.dev";
+const baseUrl = getBaseUrl();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ["", "/about", "/contact"];
