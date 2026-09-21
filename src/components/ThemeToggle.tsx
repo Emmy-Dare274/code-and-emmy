@@ -11,8 +11,9 @@ export default function ThemeToggle() {
   // The server doesn't know which theme the visitor last chose, only
   // the browser does (it's saved there).
   useEffect(() => {
-    setMounted(true);
-  }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- next-themes' documented pattern: delay render until client mount so server and client markup match on first paint
+  setMounted(true);
+}, []);
 
   if (!mounted) {
     return <div style={{ width: 38, height: 38 }} />;

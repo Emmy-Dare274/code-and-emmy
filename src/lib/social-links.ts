@@ -3,7 +3,8 @@
 // ready — every component that links out (NavBar, Footer) reads from here,
 // so you only ever update a link in one place.
 export const SOCIAL_LINKS = {
-  linkedin: "#",
+  github: "https://github.com/Emmy-Dare274",
+  linkedin: "https://www.linkedin.com/in/emmanuel-o-oluwadare/",
   instagram: "#",
   twitter: "#",
 };
