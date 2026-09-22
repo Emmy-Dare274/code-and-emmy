@@ -1,5 +1,5 @@
-// Four real projects: Faaji & Brew AfroMart, Boutique Ado, the Figma
-// design system case study, and Broker Buddy.
+// Five real projects: Faaji & Brew AfroMart, Boutique Ado, the Figma
+// design system case study, Broker Buddy, and Faaji & Brew Palace.
 
 import Image from "next/image";
 import Link from "next/link";
@@ -44,6 +44,14 @@ const projects: Project[] = [
       "A stock-trading simulator built with a six-developer team in an Agile sprint for a UK & Ireland hackathon — 1st Place Exceptional Award. My focus was collaborative feature delivery under a hard deadline.",
     tags: ["Django", "Python", "Bootstrap", "Agile"],
     image: "/images/projects/broker-buddy.png",
+  },
+  {
+    slug: "faaji-brew-palace",
+    title: "Faaji & Brew Palace",
+    description:
+      "A full-stack Django reservation system that turns a phone ringing off the hook into a two-click booking flow — live table availability, authenticated CRUD reservations, and a staff dashboard, with double-bookings blocked at the database level.",
+    tags: ["Django", "PostgreSQL", "Cloudinary", "Bootstrap"],
+    image: "/images/projects/faaji-brew-palace.png",
   },
 ];
 

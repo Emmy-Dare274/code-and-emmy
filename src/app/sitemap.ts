@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "boutique-ado",
     "figma-design-system",
     "broker-buddy",
+    "faaji-brew-palace",
   ];
 
   const staticEntries = staticRoutes.map((route) => ({
