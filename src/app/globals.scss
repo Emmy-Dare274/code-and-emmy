@@ -1,7 +1,7 @@
 // =============================================================================
 // Code & Emmy — global stylesheet
 // Bootstrap variables are overridden BEFORE the Bootstrap import so Sass
-// picks up our palette instead of Bootstrap's defaults.
+// picks up palette instead of Bootstrap's defaults.
 // =============================================================================
 
 // ---- Brand palette ----------------------------------------------------------
@@ -44,6 +44,9 @@ h1, h2, h3, h4, .site-navbar-brand {
   padding: 1.25rem 0;
   background: #0b0b0d;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 20; // stays painted above the intro-hero lanyard, which
+               // overlaps slightly upward into it — see .id-lanyard
 }
 
 .site-navbar-brand {
@@ -1259,6 +1262,34 @@ body {
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, $primary, $secondary);
+  position: relative;
+  overflow: hidden;
+
+  // A looping highlight sweep across the already-filled bar. This is
+  // deliberately NOT the bar re-filling from 0% on a loop.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: skill-meter-shimmer 2.6s ease-in-out infinite;
+  }
+}
+
+@keyframes skill-meter-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  55%,
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 // ---- "Ready to Collaborate?" section (About page) -------------------------------
@@ -1272,12 +1303,25 @@ body {
   // (rather than touching the shared footer rule, which other pages rely
   // on) is what lets this specific section sit flush against the footer.
   margin-bottom: -6rem;
+  // Same background as the homepage's badge/intro section (.intro-hero),
+  // so this section mirrors it rather than using its own gradient.
   background:
-    radial-gradient(circle at 50% 0%, rgba(47, 95, 237, 0.35), transparent 55%),
-    radial-gradient(circle at 85% 100%, rgba(255, 176, 32, 0.12), transparent 50%),
+    radial-gradient(circle at 20% 20%, rgba(47, 95, 237, 0.25), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(255, 176, 32, 0.12), transparent 50%),
     #0b0b0d;
   color: rgba(255, 255, 255, 0.92);
   text-align: center;
+
+  // The content column sits on top of the particle canvas below (added via
+  // ParticleAccent) and would otherwise catch every mouse move before it
+  // reaches the canvas, even over the empty space around the text — same
+  // fix as .intro-hero-inner. pointer-events is turned off here and
+  // re-enabled only on .collab-cta, the one actually-clickable element.
+  > .container {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
 }
 
 .collab-eyebrow {
@@ -1314,6 +1358,7 @@ body {
   font-weight: 600;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  pointer-events: auto; // re-enabled: see .collab-section > .container
 }
 
 .collab-cta:hover {
@@ -1329,5 +1374,414 @@ body {
 
   .collab-text {
     font-size: 0.95rem;
+  }
+}
+
+// ---- Homepage intro: rotating ID badge -------------------------------------
+.id-badge-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// Long enough to read as hanging from the navbar above, since .intro-hero
+// no longer vertically centers its content (see .intro-hero below)
+.id-lanyard {
+  width: 10px;
+  height: 210px;
+  background: linear-gradient(180deg, $secondary, $primary);
+  border-radius: 4px;
+  margin-bottom: -6px;
+  margin-top: -14px; // pulls it up so it overlaps/touches the navbar's
+                     // bottom edge instead of leaving a gap under it
+
+  @media (max-width: 576px) {
+    height: 140px;
+  }
+}
+
+.id-clip {
+  width: 34px;
+  height: 16px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #cfd2da, #8a8d99);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.id-badge-swing {
+  transform-origin: top center;
+}
+
+.id-card-scene {
+  perspective: 1400px;
+  cursor: pointer;
+  margin-top: -4px;
+  pointer-events: auto; // re-enabled: see .intro-hero-inner
+}
+
+.id-card-inner {
+  position: relative;
+  width: 300px;
+  max-width: 80vw;
+  height: 440px;
+  transform-style: preserve-3d;
+}
+
+.id-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+}
+
+.id-card-front {
+  background: linear-gradient(165deg, #1c1d26, #101114);
+  color: #f5f5f7;
+}
+
+.id-card-back {
+  background: linear-gradient(165deg, #101114, #1c1d26);
+  color: #f5f5f7;
+  transform: rotateY(180deg);
+}
+
+.id-card-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 1rem;
+}
+
+.id-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #6ee7b7;
+
+  svg {
+    font-size: 0.85rem;
+  }
+}
+
+.id-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  display: inline-block;
+}
+
+.id-card-photo {
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.id-card-name {
+  font-family: var(--font-heading), $font-family-sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.id-card-role {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: auto;
+}
+
+.id-card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.45);
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  margin-top: 0.75rem;
+}
+
+.id-card-back-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $secondary;
+  margin-bottom: 1rem;
+}
+
+.id-card-back-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.id-card-back-list li {
+  padding-left: 1rem;
+  position: relative;
+
+  &::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: $primary;
+  }
+}
+
+// ---- Particle backdrop (behind the badge, in front of the marquee) --------
+.particle-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  canvas {
+    display: block;
+  }
+}
+
+.id-back-hr {
+  border: none;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+  margin: 1rem 0 0.85rem;
+}
+
+.id-back-tagline {
+  font-family: var(--font-accent), cursive;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: auto; // pushes the barcode + links row to the bottom of
+                       // the card, same spacer technique as .id-card-role
+                       // uses on the front face
+}
+
+// Behind the tag's back face, near the bottom — a CSS-only barcode made of
+// two overlapping repeating-linear-gradients at different bar widths.
+.id-barcode {
+  height: 24px;
+  margin-bottom: 0.75rem;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.9) 0px,
+      rgba(255, 255, 255, 0.9) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.6) 0px,
+      rgba(255, 255, 255, 0.6) 2px,
+      transparent 2px,
+      transparent 9px
+    );
+  background-size: 100% 100%;
+  opacity: 0.9;
+}
+
+.id-card-back-links {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+
+  a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.3rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      color: $secondary;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .id-card-inner {
+    width: 260px;
+    height: 400px;
+  }
+}
+
+// ---- Homepage intro hero section -------------------------------------------
+.intro-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start; // content hangs from the top, under the navbar,
+                           // rather than centering mid-screen — see .id-lanyard
+  background:
+    radial-gradient(circle at 20% 20%, rgba(47, 95, 237, 0.25), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(255, 176, 32, 0.12), transparent 50%),
+    #0b0b0d;
+}
+
+.intro-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 0 0 4rem;
+  // This column has no background, but its box still sits on top of the
+  // particle canvas and would otherwise catch every mouse move before it
+  // reaches the canvas below — even over the "empty" space around the
+  // badge.
+  pointer-events: none;
+}
+
+.intro-hero-copy {
+  margin-top: 2rem;
+  max-width: 34rem;
+}
+
+
+.role-ticker {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-heading), $font-family-sans-serif;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.role-ticker-prefix {
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+}
+
+.role-ticker-word {
+  position: relative;
+  display: inline-block;
+  color: $secondary;
+  font-weight: 600;
+  min-height: 1.3em;
+}
+
+.intro-hero-sub {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.intro-scroll-cue {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.intro-scroll-line {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $secondary;
+    animation: scroll-cue-fall 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes scroll-cue-fall {
+  0% { top: -100%; }
+  100% { top: 100%; }
+}
+
+// ---- Background marquee (behind the ID badge) ------------------------------
+// Pinned to the first 100vh specifically
+.bg-marquee-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-marquee-layer {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+.bg-marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 4rem;
+  white-space: nowrap;
+  animation: marquee-scroll 32s linear infinite;
+  font-family: var(--font-heading), $font-family-sans-serif;
+  font-weight: 700;
+  font-size: clamp(4rem, 14vw, 11rem);
+  color: rgba(255, 255, 255, 0.06);
+  letter-spacing: -0.02em;
+}
+
+.bg-marquee-static {
+  animation: none;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+// Belt-and-braces: honor reduce-motion for the two purely-CSS-driven loops
+// above, in addition to the JS-level checks already in each component.
+@media (prefers-reduced-motion: reduce) {
+  .bg-marquee-track {
+    animation: none;
+  }
+
+  .intro-scroll-line::after {
+    animation: none;
+    top: 0;
+  }
+
+  .skill-meter-fill::after {
+    animation: none;
   }
 }

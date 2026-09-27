@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Space_Grotesk, Inter, Caveat } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
@@ -16,6 +16,14 @@ const spaceGrotesk = Space_Grotesk({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
+  display: "swap",
+});
+
+// A handwritten accent font, used sparingly for the one-line tagline under
+// the homepage intro badge — not for body copy or headings.
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-accent",
   display: "swap",
 });
 
@@ -66,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${caveat.variable}`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >

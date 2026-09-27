@@ -36,6 +36,7 @@ import {
 import ScrollReveal from "@/components/ScrollReveal";
 import SkillMeter from "@/components/SkillMeter";
 import AboutPhoto from "@/components/AboutPhoto";
+import ParticleAccent from "@/components/ParticleAccent";
 
 export const metadata: Metadata = {
   title: "About",
@@ -356,6 +357,7 @@ export default function AboutPage() {
       </section>
 
       <section className="collab-section">
+        <ParticleAccent />
         <div className="container">
           <ScrollReveal>
             <span className="collab-eyebrow">Ready to Collaborate?</span>
